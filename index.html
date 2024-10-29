@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifieds - Buy and Sell Used Electronics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #3f51b5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .product-item img {
+            width: 100px;
+            height: auto;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-block;
+        }
+        .add-product-form {
+            margin-top: 20px;
+        }
+        .add-product-form input,
+        .add-product-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .add-product-form button {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        .add-product-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Classifieds: Buy and Sell Used Electronics</h1>
+        
+        <div class="product-list" id="productList">
+            <!-- Sample Products will be displayed here -->
+        </div>
+        
+        <div class="add-product-form">
+            <h2>Add a New Product</h2>
+            <input type="text" id="productName" placeholder="Product Name" required>
+            <input type="text" id="productDescription" placeholder="Product Description" required>
+            <input type="number" id="productPrice" placeholder="Price" required>
+            <input type="text" id="productImage" placeholder="Image URL" required>
+            <button onclick="addProduct()">Add Product</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { name: 'Samsung Phone 12 Pro Max', description: 'Used, excellent condition, 64GB', price: 7000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdPZc9tjPq5JX1lJG7tfX4JAAIJnCbw5B7cw&s.jpg' },
+            { name: 'Dell Laptop', description: 'Used, good condition, Intel i7', price: 15000, image: 'https://i.pinimg.com/736x/ca/34/9b/ca349b6497e3f15dd3e8db9be02bfdef.jpg' },
+            { name: 'PlayStation 5', description: 'Used, good gaming experience', price: 18000, image: 'https://t4.ftcdn.net/jpg/03/57/13/43/360_F_357134347_AztRpwYCjbtgeM9l6u1NbRSvGOiATjxT.jpg' },
+            { name: 'Apple Tab', description: 'Used, good condition, 16GB RAM, 512GB SSD', price: 32000, image: 'https://www.shutterstock.com/image-photo/minsk-belarus-november-9-2014-260nw-229473637.jpg' },
+            { name: 'PlayStation 4', description: 'Used, excellent gaming level', price: 10990, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/PS4-Console-wDS4.jpg/1280px-PS4-Console-wDS4.jpg' },
+        ];
+
+        function addProduct() {
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            const price = document.getElementById('productPrice').value;
+            const image = document.getElementById('productImage').value;
+
+            if (name && description && price && image) {
+                const product = {
+                    name,
+                    description,
+                    price: parseFloat(price).toFixed(2),
+                    image
+                };
+                products.push(product);
+                document.getElementById('productName').value = '';
+                document.getElementById('productDescription').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productImage').value = '';
+                renderProducts();
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            products.forEach((product, index) => {
+                productList.innerHTML += `
+                    <div class="product-item">
+                        <img src="${product.image}" alt="${product.name}">
+                        <div>
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <p>Price: ₹${product.price}</p>
+                            <button onclick="promptBuyerDetails('${product.name}')">Buy Now</button>
+                            <button onclick="removeProduct(${index})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function promptBuyerDetails(productName) {
+            const buyerName = prompt("Enter your name:");
+            const buyerEmail = prompt("Enter your email:");
+
+            if (buyerName && buyerEmail) {
+                alert(`Thank you, ${buyerName}! You have successfully bought ${productName}. We will contact you at ${buyerEmail}.`);
+            } else {
+                alert('Purchase canceled. Please provide valid details.');
+            }
+        }
+
+        function removeProduct(index) {
+            products.splice(index, 1);
+            renderProducts();
+        }
+
+        // Initial render
+        renderProducts();
+    </script>
+
+</body>
+</html>
